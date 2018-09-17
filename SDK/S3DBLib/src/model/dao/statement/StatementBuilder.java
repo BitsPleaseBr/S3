@@ -6,9 +6,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import model.conexao.ConnectionFactory;
 import model.bean.info.Info;
 import model.bean.info.Tabela;
+import model.conexao.ConnectionFactory;
 
 public class StatementBuilder {
 

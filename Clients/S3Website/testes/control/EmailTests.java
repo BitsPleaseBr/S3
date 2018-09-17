@@ -8,7 +8,6 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
 import control.email.EmailWrapper;
-import control.extras.PropertiesManager;
 import model.bean.PacienteBean;
 import model.bean.info.PacienteInfo;
 import model.bean.info.UserInfo;
