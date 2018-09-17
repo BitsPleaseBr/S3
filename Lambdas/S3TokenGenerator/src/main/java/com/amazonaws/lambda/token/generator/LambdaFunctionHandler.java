@@ -44,8 +44,7 @@ public class LambdaFunctionHandler implements RequestHandler<Input, Output> {
       output.setStatus("200");
       output.setToken(token);
     } else {
-      output.setStatus("401");
-      output.setToken("Invalid credential");
+      throw new RuntimeException("401");
     }
     return output;
   }
