@@ -12,6 +12,7 @@
  */
 package com.amazonaws.lambda.api.authorizer;
 
+import org.mindrot.jbcrypt.BCrypt;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 

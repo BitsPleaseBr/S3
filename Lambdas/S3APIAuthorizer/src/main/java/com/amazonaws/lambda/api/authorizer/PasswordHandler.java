@@ -3,6 +3,7 @@ package com.amazonaws.lambda.api.authorizer;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Classe para armazenamento de password
