@@ -41,12 +41,10 @@ public class PropertiesManager {
   }
 
   /**
-   * Retorna uma string de um documento a partir do endereço dele.
-   * Google Guava FTW
-   * @param endereco
-   * O endereço do caminho do arquivo a ser convertido
-   * @return
-   * String do conteúdo de texto do arquivo.
+   * Retorna uma string de um documento a partir do endereço dele. Google Guava FTW
+   * 
+   * @param endereco O endereço do caminho do arquivo a ser convertido
+   * @return String do conteúdo de texto do arquivo.
    */
   public static String getStringFromDocument(String endereco) {
 

@@ -19,7 +19,7 @@ public class ConnectionTest {
       Connection conexao = ConnectionFactory.getConnection();
       DatabaseMetaData metaDados = (DatabaseMetaData) conexao.getMetaData();
       System.out.println(metaDados.getDatabaseProductName() + ", "
-              + metaDados.getDatabaseProductVersion() + ", " + metaDados.getDatabaseMajorVersion());
+          + metaDados.getDatabaseProductVersion() + ", " + metaDados.getDatabaseMajorVersion());
     } catch (Exception e) {
       e.printStackTrace();
       return false;

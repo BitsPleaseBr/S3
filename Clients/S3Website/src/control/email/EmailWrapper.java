@@ -13,8 +13,8 @@ import model.bean.info.PacienteInfo;
 import model.bean.info.UserInfo;
 
 /**
- * Classe para controle de e-mails do programa
- * Atualmente usada para envio de e-mails de confirmação
+ * Classe para controle de e-mails do programa Atualmente usada para envio de e-mails de confirmação
+ * 
  * @author Diogo
  * @version 0.1
  */

@@ -8,13 +8,13 @@ import java.sql.SQLException;
  * @author Diogo Klein Classe para criar uma conexão com o banco de dados. Não pode ser instanciada.
  */
 public class ConnectionFactory {
-  
+
   // Constantes para acessar o banco de dados
   private static final String connectionURL = System.getenv("connectionURLDB");
   private static final String user = System.getenv("userDB");
   private static final String password = System.getenv("passwordDB");
   private static final String connectionPrefix = "jdbc:mysql://";
-  
+
   /**
    * Método para retornar a conexão com o banco de dados
    * 
@@ -38,6 +38,6 @@ public class ConnectionFactory {
   }
 
   private ConnectionFactory() {
-    
+
   }
 }

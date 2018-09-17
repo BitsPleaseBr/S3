@@ -70,7 +70,7 @@ public class EmailTests {
 
     }
   }
-  
+
   public static void testHtmlEmail() {
     PacienteBean paciente = new PacienteBean();
     paciente.setInfo(PacienteInfo.IDUser, 11);

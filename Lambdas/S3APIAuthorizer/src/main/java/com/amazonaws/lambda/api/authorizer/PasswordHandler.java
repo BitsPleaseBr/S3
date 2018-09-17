@@ -22,9 +22,9 @@ public class PasswordHandler {
     final String prefixo = "$2a$10$"; // String prefixado no salt com parâmetros
                                       // de hashing para o algoritmo
     String salt = email + email.length() + email; // O salt recebe um sufixo
-                                                   // para garantir um tamanho
-                                                   // mínimo
-                                                   // necessário
+                                                  // para garantir um tamanho
+                                                  // mínimo
+                                                  // necessário
 
     // É necessário remover qualquer caractere que não estejam em Base64.
     salt = removerCaracteresInvalidos(salt);
@@ -42,12 +42,13 @@ public class PasswordHandler {
     salt = salt.replaceAll("[^A-Za-z0-9/.]", "a");
     return salt;
   }
-  
+
   public static boolean isHash(String hash) {
     Pattern pattern = Pattern.compile("^\\$2a\\$10\\$.*");
     Matcher matcher = pattern.matcher(hash);
     return matcher.matches();
   }
+
   // Construtor privado evita o instanciamento da classe
   private PasswordHandler() {
 

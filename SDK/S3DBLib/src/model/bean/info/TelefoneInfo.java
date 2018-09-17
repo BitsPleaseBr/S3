@@ -5,7 +5,7 @@ import control.validators.Parsers;
 
 public enum TelefoneInfo implements Info {
 
-  Numero("numero", a->Parsers.removeNonNum(a)), IDUser("user_id"), Tipo("tipo");
+  Numero("numero", a -> Parsers.removeNonNum(a)), IDUser("user_id"), Tipo("tipo");
 
   // Campo que esse enum representa no banco
   private final String campo;

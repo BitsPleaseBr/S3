@@ -20,7 +20,7 @@ public class Teste_Medico {
   }
 
   private static void selecionar(int id) {
-    
+
     try {
 
       new MedicoDao().selecionar(id);
@@ -31,36 +31,36 @@ public class Teste_Medico {
       e.printStackTrace();
     }
   }
-  
+
   private static void deletar(int id) {
-    
+
     try {
-      
+
       new MedicoDao().deletar(id);
     } catch (SQLException e) {
-      
+
       System.out.println("o mano deu erro");
       e.printStackTrace();
     }
   }
-  
+
   private static void alterar(int id) {
-    
+
     MedicoBean mb = new MedicoBean();
     mb.setInfo(UserInfo.ID, id);
     mb.setInfo(MedicoInfo.IDUser, id);
     mb.setInfo(UserInfo.Nome, "Gelson");
-    
+
     try {
-      
+
       new MedicoDao().alterar(mb);
     } catch (SQLException e) {
-      
+
       System.out.println("o mano deu erro");
       e.printStackTrace();
     }
   }
-  
+
   private static void cadastrar() {
 
     MedicoBean mb = new MedicoBean();

@@ -32,15 +32,15 @@ public class LambdaFunctionHandler implements RequestHandler<TokenAuthorizerCont
     TokenParser parser = new TokenParser(token);
     String id = parser.getID();
     String hash = parser.getHash();
-    
+
     boolean autorizado = true;
-    
+
     // Validar hash
     // Usar e-mail para coletar id e hash de senha do usuário
     DBHandler handler = new DBHandler(id);
     String principalId = handler.getId();
     String pswd = handler.getHash();
-    
+
     // Validar token usando chave particular da lambda
     String secret = pswd + key;
     BCrypt.checkpw(secret, hash);
