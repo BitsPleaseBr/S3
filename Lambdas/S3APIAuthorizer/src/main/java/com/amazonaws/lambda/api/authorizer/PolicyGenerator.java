@@ -2,6 +2,7 @@ package com.amazonaws.lambda.api.authorizer;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.amazonaws.lambda.api.authorizer.AuthPolicy.HttpMethod;
 import com.amazonaws.lambda.api.authorizer.AuthPolicy.PolicyDocument;
 
 public class PolicyGenerator {
@@ -12,13 +13,12 @@ public class PolicyGenerator {
   AuthPolicy buildPolicy(boolean permitir) {
     AuthPolicy auth = new AuthPolicy();
     auth.setPrincipalId(principalId);
-    PolicyDocument doc;
+    PolicyDocument doc = new PolicyDocument(arnParser.getRegion(), arnParser.getAwsAccountId(),
+        arnParser.getRestApiId(), arnParser.getStage());
     if (permitir) {
-      doc = PolicyDocument.getAllowAllPolicy(arnParser.getRegion(), arnParser.getAwsAccountId(),
-          arnParser.getRestApiId(), arnParser.getStage());
+      doc.allowMethod(HttpMethod.ALL, "/*");
     } else {
-      doc = PolicyDocument.getDenyAllPolicy(arnParser.getRegion(), arnParser.getAwsAccountId(),
-          arnParser.getRestApiId(), arnParser.getStage());
+      doc.denyMethod(HttpMethod.ALL, "/*");
     }
     auth.setPolicyDocument(doc);
     return auth;

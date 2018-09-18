@@ -24,13 +24,15 @@ public class DBHandler {
     this.id = id;
 
     // Busca os dados no banco de dados
-    String sqlQuery =
-        String.format("SELECT %s FROM %s WHERE %s = %s", campoSenha, tabelaUserBD, campoID, id);
+    String sqlQuery = String.format("SELECT %s FROM %s WHERE %s = %s", campoID + ", " + campoSenha,
+        tabelaUserBD, campoID, id);
     try {
       PreparedStatement statement = connection.prepareStatement(sqlQuery);
       ResultSet results = statement.executeQuery();
-      id = results.getString("id");
-      hash = results.getString("password");
+      if (results.next()) {
+        id = results.getString(campoID);
+        hash = results.getString(campoSenha);
+      }
     } catch (Exception e) {
       System.out.println("Erro ao accesar banco de dados para autenticar acesso ao API");
       e.printStackTrace();

@@ -34,7 +34,7 @@ public class LambdaFunctionHandler implements RequestHandler<TokenAuthorizerCont
     String id = parser.getID();
     String hash = parser.getHash();
 
-    boolean autorizado = true;
+    context.getLogger().log("input recebido. Hash: " + hash + ", id: " + id);
 
     // Validar hash
     // Usar e-mail para coletar id e hash de senha do usuário
@@ -44,15 +44,16 @@ public class LambdaFunctionHandler implements RequestHandler<TokenAuthorizerCont
 
     // Validar token usando chave particular da lambda
     String secret = pswd + key;
-    BCrypt.checkpw(secret, hash);
-    if (!autorizado) {
-      throw new RuntimeException("Unauthorized");
+    context.getLogger().log("secret gerado: " + secret);
+    boolean autorizado = false;
+    try {
+      autorizado = BCrypt.checkpw(secret, hash);
+    } catch (IllegalArgumentException e) {
+      autorizado = false;
     }
 
-    // Confere o tipo do usuário e associa a política que permite acesso à lambda
-    ArnParser arnParser = new ArnParser(input.getMethodArn());
-
     // Retorna a política
+    ArnParser arnParser = new ArnParser(input.getMethodArn());
     PolicyGenerator policyGenerator = new PolicyGenerator(arnParser, principalId);
     return policyGenerator.buildPolicy(autorizado);
   }

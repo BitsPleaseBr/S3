@@ -13,6 +13,7 @@ public class ConnectionFactory {
   private static final String connectionURL = System.getenv("connectionURLDB");
   private static final String user = System.getenv("userDB");
   private static final String password = System.getenv("passwordDB");
+  private static final String connectionPrefix = "jdbc:mysql://";
 
   /**
    * Método para retornar a conexão com o banco de dados
@@ -27,8 +28,9 @@ public class ConnectionFactory {
 
     // Realizar a conexão
     try {
-      conexao = DriverManager.getConnection(connectionURL, user, password);
-    } catch (SQLException e) {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      conexao = DriverManager.getConnection(connectionPrefix + connectionURL, user, password);
+    } catch (SQLException | ClassNotFoundException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
     }

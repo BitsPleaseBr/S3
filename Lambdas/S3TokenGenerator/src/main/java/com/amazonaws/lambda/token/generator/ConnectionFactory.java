@@ -22,13 +22,13 @@ public class ConnectionFactory {
    *         retorna null.
    */
   public static Connection getConnection() {
-
+    
     // Variável para retornar a conexão
     Connection conexao = null;
 
     // Realizar a conexão
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conexao = DriverManager.getConnection(connectionPrefix + connectionURL, user, password);
     } catch (SQLException | ClassNotFoundException e) {
       e.printStackTrace();
