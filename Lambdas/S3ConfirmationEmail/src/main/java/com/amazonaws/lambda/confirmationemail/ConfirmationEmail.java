@@ -6,45 +6,48 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
 public class ConfirmationEmail {
-  private String message;
+  private final String fromAdress = System.getenv("fromAdress");
+  private final String emailUser = System.getenv("emailUser");
+  private final String emailPassword = System.getenv("emailPassword");
+  private final String smtpHost = System.getenv("smtpHost");
+  private final Integer smtpPort = Integer.valueOf(System.getenv("smtpPort"));
+  private final String subject = System.getenv("emailSubject");
+  private final String baseURL = System.getenv("confirmationURL");
+  private final String URLPattern = baseURL + "?token=%s"; 
+  private MessageParser parser;
 
   public void send() {
     // Create the email message
     HtmlEmail email = new HtmlEmail();
-    email.setHostName("smtp.googlemail.com");
-    email.setSmtpPort(465);
+    email.setHostName(smtpHost);
+    email.setSmtpPort(smtpPort);
     email.setSSLOnConnect(true);
-    email.setAuthenticator(new DefaultAuthenticator("bitspleasebr", "b1tspl34s3"));
+    email.setAuthenticator(new DefaultAuthenticator(emailUser, emailPassword));
     try {
-      email.addTo(new String[] {"diogodklein@gmail.com", "guhillesheim@gmail.com",
-          "gbtotti@live.com", "arianarbarba@gmail.com"});
-      email.setFrom("bitspleasebr@gmail.com");
+      email.addTo(parser.getEmail());
+      email.setFrom(fromAdress);
     } catch (EmailException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    email.setSubject("HTML TestMail");
+    email.setSubject(subject);
 
-    // embed the image and get the content id
-    URL url;
     try {
-      url = new URL("http://teste.mk4avhzpsj.sa-east-1.elasticbeanstalk.com/_img/icon.png");
-      String cid = email.embed(url.toString(), "Nossa Logo");
       // set the html message
-      email.setHtmlMsg("<html>Nossa logo - <img src=\"cid:" + cid + "\"></html>");
+      email.setHtmlMsg("<html></html>");
 
       // set the alternative message
-      email.setTextMsg("Your email client does not support HTML messages");
+      email.setTextMsg("Tinha uma imagem legal aqui se você abrisse esse email em html =(");
 
+      // gera link de confirmação
+      String confirmationUrl = String.format(URLPattern, parser.getToken());
       // send the email
       email.send();
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
   ConfirmationEmail(String message) {
-    this.message = message;
+    parser = new MessageParser(message);
   }
 }
