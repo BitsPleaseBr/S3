@@ -40,6 +40,8 @@ public class ConfirmationEmail {
 
       // Gera link de confirmação
       String confirmationUrl = String.format(URLPattern, parser.getToken());
+      doc.select("name").first().text(parser.getNome());
+      doc.select("link").first().text(confirmationUrl);
       
       email.setHtmlMsg(doc.toString());
       // Envia o e-mail
