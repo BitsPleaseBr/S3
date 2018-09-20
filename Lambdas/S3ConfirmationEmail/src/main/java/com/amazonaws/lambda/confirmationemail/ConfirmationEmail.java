@@ -1,9 +1,11 @@
 package com.amazonaws.lambda.confirmationemail;
 
-import javax.print.DocFlavor.URL;
+import java.io.File;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class ConfirmationEmail {
   private final String fromAdress = System.getenv("fromAdress");
@@ -17,7 +19,7 @@ public class ConfirmationEmail {
   private MessageParser parser;
 
   public void send() {
-    // Create the email message
+    // Enviar o email
     HtmlEmail email = new HtmlEmail();
     email.setHostName(smtpHost);
     email.setSmtpPort(smtpPort);
@@ -32,22 +34,27 @@ public class ConfirmationEmail {
     email.setSubject(subject);
 
     try {
-      // set the html message
-      email.setHtmlMsg("<html></html>");
+      // Configura o html do email
+      File template = new File("template/EmailTemplate.html");
+      Document doc = Jsoup.parse(template, "UTF-8","");
 
-      // set the alternative message
-      email.setTextMsg("Tinha uma imagem legal aqui se você abrisse esse email em html =(");
-
-      // gera link de confirmação
+      // Gera link de confirmação
       String confirmationUrl = String.format(URLPattern, parser.getToken());
-      // send the email
+      
+      email.setHtmlMsg(doc.toString());
+      // Envia o e-mail
       email.send();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
+  
+  public static ConfirmationEmail build(String message) {
+    ConfirmationEmail email = new ConfirmationEmail();
+    email.parser = new MessageParser(message);
+    return email;
+  }
 
-  ConfirmationEmail(String message) {
-    parser = new MessageParser(message);
+  private ConfirmationEmail() {
   }
 }
