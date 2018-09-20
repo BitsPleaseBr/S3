@@ -21,6 +21,7 @@ import s3.api.method.resources.users.id.dados_profissional.DadosProfissional;
 import s3.api.method.resources.users.id.dados_usuario.DadosUsuario;
 import s3.api.method.resources.users.id.enderecos.Enderecos;
 import s3.api.method.resources.users.id.telefones.Telefones;
+import s3.api.method.resources.verificar.Verificar;
 
 public class MethodCallerFactory {
 
@@ -230,5 +231,18 @@ public class MethodCallerFactory {
     headers.put("senha", senha);
 
     return new MethodCaller(Tokens.SELECIONAR).withApiKey("RE66Z7Dzv56HveU1nXat6aJy9a6U0F178ude2pnj").withHeaders(headers);
+  }
+  
+  //verificar
+  //verificar/email/{valor}
+  public static MethodCaller verificarEmail(String email) {
+    
+    return new MethodCaller(Verificar.EMAIL).putParameter("valor", email);
+  }
+  
+  //verificar/email/{valor}
+  public static MethodCaller verificarCpf(String cpf) {
+    
+    return new MethodCaller(Verificar.CPF).putParameter("valor", cpf);
   }
 }
