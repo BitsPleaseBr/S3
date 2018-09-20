@@ -13,6 +13,7 @@ public class LambdaFunctionHandler implements RequestHandler<SNSEvent, String> {
       String message = event.getRecords().get(0).getSNS().getMessage();
       context.getLogger().log("From SNS: " + message);
       ConfirmationEmail.build(message).send();
+      context.getLogger().log("Email enviado com sucesso");
       return "200";
     } catch (Exception e) {
       context.getLogger().log("Erro ao enviar email de confirmação.");
