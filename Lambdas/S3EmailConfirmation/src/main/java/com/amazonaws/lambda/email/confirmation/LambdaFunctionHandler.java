@@ -8,21 +8,24 @@ public class LambdaFunctionHandler implements RequestHandler<Input, Output> {
 
     @Override
     public Output handleRequest(Input input, Context context) {
-        final String key = System.getenv("key");
+        final String key = System.getenv("secretKey");
         Output out = new Output();
         context.getLogger().log("Input token: " + input.getToken());
 
         TokenParser parser = new TokenParser(input.getToken());
         
         // Confere se o email existe no BD
-        String email = parser.getEmail();
-        DBHandler handler = new DBHandler(email);
+        String userEmail = parser.getUserEmail();
+        DBHandler handler = new DBHandler(userEmail);
         if(!handler.existe()) {
+          System.out.println("Email não confirmado por não existir no BD");
+          System.out.println("Email: " + parser.getUserEmail());
           throw new RuntimeException("403");
         }
         // Confere se o hash do token é válido
         Boolean confirmado;
-        String secret = parser.getEmail() + key;
+        String secret = parser.getUserEmail() + key;
+        System.out.println(secret);
         try {
           confirmado = BCrypt.checkpw(secret, parser.getHash());
         } catch (Exception e) {
@@ -31,6 +34,9 @@ public class LambdaFunctionHandler implements RequestHandler<Input, Output> {
           confirmado = false;
         }
         if(!confirmado) {
+          System.out.println("Email não confirmado por falha na conferência do token");
+          System.out.println("Secret: " + secret);
+          System.out.println("Hash: " + parser.getHash());
           throw new RuntimeException("403");
         }
         

@@ -4,7 +4,7 @@ public class TokenParser {
   private String email;
   private String hash;
 
-  public String getEmail() {
+  public String getUserEmail() {
     return email;
   }
 
