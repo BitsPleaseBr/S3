@@ -3,6 +3,7 @@
 <%@page import="model.bean.info.UserInfo"%>
 <%@page import="model.bean.info.MedicoInfo"%>
 <%@page import="model.bean.MedicoBean"%>
+<%@page import="s3.api.access.MethodCallerFactory"%>
 <%
   MedicoBean pb = new MedicoBean();
 
@@ -37,8 +38,8 @@
 		pb.setInfo(enums[i], request.getParameter(parIndex[i]));
 	}
 	
-  //Cadastra o mÃ©dico
-	new ProfissionalDao().cadastrar(pb);
-	
-	response.sendRedirect("../index.jsp");
+  //Cadastra o médico
+  out.print(MethodCallerFactory.cadastraruser(pb).call().getBody());
+  
+  response.sendRedirect("../index.jsp");
 %>
