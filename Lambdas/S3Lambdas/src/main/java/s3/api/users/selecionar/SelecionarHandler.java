@@ -23,8 +23,7 @@ public class SelecionarHandler extends Handler
       System.getenv("SELECIONAR_DADOS_PACIENTE"),
       SELECIONAR_DADOS_MEDICO = System.getenv("SELECIONAR_DADOS_MEDICO"),
       SELECIONAR_DADOS_USUARIO = System.getenv("SELECIONAR_DADOS_USUARIO"),
-      VERIFICAR_CPF = System.getenv("VERIFICAR_CPF"),
-      VERIFICAR_EMAIL = System.getenv("VERIFICAR_EMAIL");
+      VERIFICAR = System.getenv("VERIFICAR");
 
 
   @Override
@@ -48,11 +47,15 @@ public class SelecionarHandler extends Handler
     if (tipo.equals(SELECIONAR_DADOS_USUARIO))
       return new SelUseHandler().handleRequest(g.fromJson(json, SelUseRequest.class), context);
 
-    if (tipo.equals(VERIFICAR_CPF))
-      return new VerCPFHandler().handleRequest(g.fromJson(json, VerCPFRequest.class), context);
-
-    if (tipo.equals(VERIFICAR_EMAIL))
-      return new VerEmailHandler().handleRequest(g.fromJson(json, VerEmailRequest.class), context);
+    if (tipo.equals(VERIFICAR)) {
+      
+      if (input.getValores().get("email") != null)
+        return new VerEmailHandler().handleRequest(g.fromJson(json, VerEmailRequest.class), context);
+        
+      if (input.getValores().get("cpf") != null)
+        return new VerCPFHandler().handleRequest(g.fromJson(json, VerCPFRequest.class), context);
+    }
+      
 
     response.setSucesso(true);
     response.addMessage("Erro de Tipo", "Não foi encontrada nenhuma função lambda para o tipo " + tipo);
