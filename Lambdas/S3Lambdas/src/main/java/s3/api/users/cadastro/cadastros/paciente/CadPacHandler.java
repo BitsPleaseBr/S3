@@ -1,13 +1,14 @@
 package s3.api.users.cadastro.cadastros.paciente;
 
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import control.crypto.PswdStorage;
 import model.bean.PacienteBean;
 import model.bean.info.UserInfo;
 import model.dao.PacienteDao;
 import s3.api.Handler;
+import s3.api.users.cadastro.cadastros.NotificadorSNS;
 
 public class CadPacHandler extends Handler implements RequestHandler<CadPacRequest, CadPacResponse> {
 
@@ -27,7 +28,7 @@ public class CadPacHandler extends Handler implements RequestHandler<CadPacReque
     pb.setInfo(UserInfo.CPF, input.getCpf());
     pb.setInfo(UserInfo.DataNascimento, input.getDataNascimento());
     pb.setInfo(UserInfo.Email, input.getEmail());
-    pb.setInfo(UserInfo.Senha, PswdStorage.clientPswdHash(input.getSenha(), input.getEmail()));
+    pb.setInfo(UserInfo.Senha, BCrypt.hashpw(input.getSenha(), BCrypt.gensalt()));
 
     int id = -1;
     try {
@@ -49,7 +50,9 @@ public class CadPacHandler extends Handler implements RequestHandler<CadPacReque
 
     response.setId(id);
     response.setSucesso(true);
-
+    log("Notificando cadastro no canal SNS");
+    NotificadorSNS.publicarCadastro(pb.getInfo(UserInfo.Email).toString(), pb.getInfo(UserInfo.Nome).toString());
+    
     log("A função foi executada com sucesso!");
     
     return response;

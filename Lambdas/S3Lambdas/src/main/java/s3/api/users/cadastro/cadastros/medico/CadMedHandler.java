@@ -1,9 +1,9 @@
 package s3.api.users.cadastro.cadastros.medico;
 
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import control.crypto.PswdStorage;
 import model.bean.EnderecoBean;
 import model.bean.MedicoBean;
 import model.bean.TelefoneBean;
@@ -13,6 +13,7 @@ import model.bean.info.TelefoneInfo;
 import model.bean.info.UserInfo;
 import model.dao.MedicoDao;
 import s3.api.Handler;
+import s3.api.users.cadastro.cadastros.NotificadorSNS;
 
 public class CadMedHandler extends Handler implements RequestHandler<CadMedRequest, CadMedResponse> {
   
@@ -34,7 +35,7 @@ public class CadMedHandler extends Handler implements RequestHandler<CadMedReque
     mb.setInfo(UserInfo.CPF, input.getCpf());
     mb.setInfo(UserInfo.DataNascimento, input.getDataNascimento());
     mb.setInfo(UserInfo.Email, input.getEmail());
-    mb.setInfo(UserInfo.Senha, PswdStorage.clientPswdHash(input.getSenha(), input.getEmail()));
+    mb.setInfo(UserInfo.Senha, BCrypt.hashpw(input.getSenha(), BCrypt.gensalt()));
 
     log("Definindo informações médicas do médico...");
     
@@ -88,7 +89,7 @@ public class CadMedHandler extends Handler implements RequestHandler<CadMedReque
 
     log("Adicionando informações ao bean do médico...");
     
-    //Adicionando adicionais ao Bean
+    //Adicionando infos adicionais ao Bean
     mb.addTelefone(tt);
     mb.addTelefone(tc);
     mb.addEndereco(er);
@@ -116,9 +117,14 @@ public class CadMedHandler extends Handler implements RequestHandler<CadMedReque
     
     response.setId(id);
     response.setSucesso(true);
-    
+    log("Notificando cadastro no canal SNS");
+    NotificadorSNS.publicarCadastro(mb.getInfo(UserInfo.Email).toString(), mb.getInfo(UserInfo.Nome).toString());
     log("A função foi executada com sucesso!");
     
     return response;
+  }
+  
+  private void notificarCadastro() {
+    
   }
 }

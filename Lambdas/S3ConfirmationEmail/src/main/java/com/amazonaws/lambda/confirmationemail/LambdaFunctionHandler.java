@@ -8,11 +8,17 @@ public class LambdaFunctionHandler implements RequestHandler<SNSEvent, String> {
 
   @Override
   public String handleRequest(SNSEvent event, Context context) {
-    context.getLogger().log("Received event: " + event);
-    String message = event.getRecords().get(0).getSNS().getMessage();
-    context.getLogger().log("From SNS: " + message);
-    ConfirmationEmail email = new ConfirmationEmail(message);
-    email.send();
-    return "200";
+    try {
+      context.getLogger().log("Received event: " + event);
+      String message = event.getRecords().get(0).getSNS().getMessage();
+      context.getLogger().log("From SNS: " + message);
+      ConfirmationEmail.build(message).send();
+      context.getLogger().log("Email enviado com sucesso");
+      return "200";
+    } catch (Exception e) {
+      context.getLogger().log("Erro ao enviar email de confirmação.");
+      e.printStackTrace();
+      return "500";
+    }
   }
 }
