@@ -1,5 +1,6 @@
 package s3.api.documentos.cadastrar;
 
+import java.util.HashMap;
 import java.util.Map.Entry;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -20,9 +21,11 @@ public class WriteDocHandler extends Handler
 
     WriteDocResponse response = new WriteDocResponse();
 
-    int userId = input.getIdUsuario();
-    int casoId = input.getIdCasoMedico();
-    int documentoId = input.getIdExame();
+    HashMap<String, Object> valores = input.getValores();
+    
+    int userId = (Integer) valores.get("IdUsuario");
+    int casoId = (Integer) valores.get("IdCasoMedico");
+    int documentoId = (Integer) valores.get("IdDocumento");
 
     String key = userId + "-" + casoId + "-" + documentoId;
 
@@ -35,7 +38,7 @@ public class WriteDocHandler extends Handler
     Item item = new Item()
                   .withPrimaryKey("id_exame", key);
     
-    for (Entry<String, Object> entrada : input.getBody().entrySet())
+    for (Entry<String, Object> entrada : input.getValores().entrySet())
       item.with(entrada.getKey(), entrada.getValue());
     
     tabela.putItem(item);

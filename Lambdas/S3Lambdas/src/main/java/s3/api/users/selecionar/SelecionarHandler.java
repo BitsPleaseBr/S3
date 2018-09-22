@@ -8,6 +8,8 @@ import s3.api.users.selecionar.dados.medico.SelMedHandler;
 import s3.api.users.selecionar.dados.medico.SelMedRequest;
 import s3.api.users.selecionar.dados.paciente.SelPacHandler;
 import s3.api.users.selecionar.dados.paciente.SelPacRequest;
+import s3.api.users.selecionar.dados.todos.SelTodHandler;
+import s3.api.users.selecionar.dados.todos.SelTodRequest;
 import s3.api.users.selecionar.dados.usuario.SelUseHandler;
 import s3.api.users.selecionar.dados.usuario.SelUseRequest;
 import s3.api.users.selecionar.verificacoes.cpf.VerCPFHandler;
@@ -23,6 +25,7 @@ public class SelecionarHandler extends Handler
       System.getenv("SELECIONAR_DADOS_PACIENTE"),
       SELECIONAR_DADOS_MEDICO = System.getenv("SELECIONAR_DADOS_MEDICO"),
       SELECIONAR_DADOS_USUARIO = System.getenv("SELECIONAR_DADOS_USUARIO"),
+      SELECIONAR_TODOS_DADOS = System.getenv("SELECIONAR_TODOS_DADOS"),
       VERIFICAR = System.getenv("VERIFICAR");
 
 
@@ -38,6 +41,9 @@ public class SelecionarHandler extends Handler
 
     String tipo = input.getTipo();
 
+    if (tipo.equals(SELECIONAR_TODOS_DADOS))
+      return new SelTodHandler().handleRequest(g.fromJson(json, SelTodRequest.class), context);
+    
     if (tipo.equals(SELECIONAR_DADOS_MEDICO))
       return new SelMedHandler().handleRequest(g.fromJson(json, SelMedRequest.class), context);
 
