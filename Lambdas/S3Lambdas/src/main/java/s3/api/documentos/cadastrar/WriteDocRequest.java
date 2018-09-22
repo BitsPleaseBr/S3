@@ -6,52 +6,19 @@ import s3.api.Request;
 public class WriteDocRequest extends Request {
 
   
-  private HashMap<String, Object> body = new HashMap<String, Object>();
-  private int idUsuario, idCasoMedico, idExame;
+  private HashMap<String, Object> valores = new HashMap<String, Object>();
   
   
   public WriteDocRequest() {}
   
   
-  public void setBody(HashMap<String, Object> body) {
+  public void setValores(HashMap<String, Object> valores) {
     
-    this.body = body;
+    this.valores = valores;
   }
   
-  public HashMap<String, Object> getBody() {
+  public HashMap<String, Object> getValores() {
     
-    return this.body;
+    return this.valores;
   }
-
-
-  public int getIdUsuario() {
-    return idUsuario;
-  }
-
-
-  public void setIdUsuario(int idUsuario) {
-    this.idUsuario = idUsuario;
-  }
-
-
-  public int getIdCasoMedico() {
-    return idCasoMedico;
-  }
-
-
-  public void setIdCasoMedico(int idCasoMedico) {
-    this.idCasoMedico = idCasoMedico;
-  }
-
-
-  public int getIdExame() {
-    return idExame;
-  }
-
-
-  public void setIdExame(int idExame) {
-    this.idExame = idExame;
-  }
-  
-  
 }

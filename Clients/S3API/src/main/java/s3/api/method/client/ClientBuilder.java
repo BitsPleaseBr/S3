@@ -2,7 +2,6 @@ package s3.api.method.client;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
-import ca.ryangreen.apigateway.generic.GenericApiGatewayClient;
 import ca.ryangreen.apigateway.generic.GenericApiGatewayClientBuilder;
 import s3.api.method.caller.MethodCaller;
 
@@ -36,12 +35,11 @@ public class ClientBuilder extends GenericApiGatewayClientBuilder {
     return this.methodCaller;
   }
 
-  @Override
-  public GenericApiGatewayClient build() {
+  public S3ApiClient s3Build() {
 
     super.withEndpoint(endpoint);
     super.withRegion(region);
-    
-    return super.build();
+
+    return new S3ApiClient(super.build());
   }
 }
